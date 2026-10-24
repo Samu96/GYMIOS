@@ -23,17 +23,27 @@ jobs:
           npm install
           sudo gem install cocoapods
 
-      - name: Clean, Install Pods and Sync iOS
+      - name: Clean and Regenerate iOS Platform
         run: |
+          # Eliminar cualquier carpeta ios anterior corrupta
+          rm -rf ios
+          # Inicializar la plataforma ios de forma limpia desde Capacitor
+          npx cap add ios
           npx cap sync ios
-          cd ios/App
-          pod install
-          cd ../..
 
       - name: Build Xcode Project
         run: |
           cd ios/App
-          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath $PWD/build/App.xcarchive CODE_SIGN_STYLE="Manual" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
+          xcodebuild -workspace App.xcworkspace \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            archive \
+            -archivePath $PWD/build/App.xcarchive \
+            CODE_SIGN_STYLE="Manual" \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO
 
       - name: Package Payload to IPA
         run: |
