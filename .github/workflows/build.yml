@@ -28,9 +28,13 @@ jobs:
           rm -rf ios
           npx cap add ios
           
-          # Forzar el deployment target a iOS 15.0 en el Podfile generado
-          sed -i '' "s/platform :ios, '..'/platform :ios, '15.0'/g" ios/App/Podfile || true
-          
+	# Actualizar el deployment target a 15.0 usando Node.js de forma segura
+          node -e "
+            const fs = require('fs');
+            let content = fs.readFileSync('ios/App/Podfile', 'utf8');
+            content = content.replace(/platform :ios, .*/, \"platform :ios, '15.0'\");
+            fs.writeFileSync('ios/App/Podfile', content);
+          "          
           npx cap sync ios
 
       - name: Build Xcode Project
