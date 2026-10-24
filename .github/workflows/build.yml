@@ -23,12 +23,14 @@ jobs:
           npm install
           sudo gem install cocoapods
 
-      - name: Clean and Regenerate iOS Platform
+      - name: Clean, Regenerate iOS and Fix Podfile Target
         run: |
-          # Eliminar cualquier carpeta ios anterior corrupta
           rm -rf ios
-          # Inicializar la plataforma ios de forma limpia desde Capacitor
           npx cap add ios
+          
+          # Forzar el deployment target a iOS 15.0 en el Podfile generado
+          sed -i '' "s/platform :ios, '..'/platform :ios, '15.0'/g" ios/App/Podfile || true
+          
           npx cap sync ios
 
       - name: Build Xcode Project
