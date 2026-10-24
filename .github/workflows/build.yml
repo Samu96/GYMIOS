@@ -32,7 +32,8 @@ jobs:
 
       - name: Build Xcode Project
         run: |
-          cd ios/Appxcodebuild -workspace App.xcworkspace \
+          cd ios/App
+	  xcodebuild -workspace App.xcworkspace \
             -scheme App \
             -sdk iphoneos \
             -configuration Release \
