@@ -33,17 +33,7 @@ jobs:
       - name: Build Xcode Project
         run: |
           cd ios/App
-	  xcodebuild -workspace App.xcworkspace \
-            -scheme App \
-            -sdk iphoneos \
-            -configuration Release \
-            archive \
-            -archivePath $PWD/build/App.xcarchive \
-            CODE_SIGN_STYLE="Manual" \
-            CODE_SIGN_IDENTITY="" \
-            CODE_SIGNING_REQUIRED=NO \
-            CODE_SIGNING_ALLOWED=NO
-
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath $PWD/build/App.xcarchive CODE_SIGN_STYLE="Manual" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO
       - name: Package Payload to IPA
         run: |
           cd ios/App/build/App.xcarchive/Products/Applications
