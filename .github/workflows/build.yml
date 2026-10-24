@@ -1,0 +1,45 @@
+name: Build iOS IPA
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Add and sync iOS
+        run: |
+          npx cap add ios || true
+          npx cap sync ios
+
+      - name: Build Xcode Project
+        run: |
+          cd ios/App
+          xcodebuild -workspace App.xcworkspace -scheme App -sdk iphoneos -configuration Release archive -archivePath $PWD/build/App.xcarchive CODE_SIGNING_ALLOWED=NO
+
+      - name: Package Payload to IPA
+        run: |
+          cd ios/App/build/App.xcarchive/Products/Applications
+          mkdir Payload
+          mv App.app Payload/
+          zip -r App.ipa Payload
+
+      - name: Upload IPA Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: gym-app-ipa
+          path: ios/App/build/App.xcarchive/Products/Applications/App.ipa

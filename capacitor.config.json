@@ -1,0 +1,6 @@
+{
+  "appId": "com.tuusuario.mientreno",
+  "appName": "Mi entreno",
+  "webDir": "www",
+  "ios": { "contentInset": "never" }
+}
