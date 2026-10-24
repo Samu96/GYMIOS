@@ -1,6 +1,10 @@
 {
-  "appId": "com.tuusuario.mientreno",
-  "appName": "Mi entreno",
+  "appId": "com.example.mientreno",
+  "appName": "Mi Entreno",
   "webDir": "www",
-  "ios": { "contentInset": "never" }
+  "bundledWebRuntime": false,
+  "ios": {
+    "contentInset": "automatic",
+    "deploymentTarget": "16.0"
+  }
 }

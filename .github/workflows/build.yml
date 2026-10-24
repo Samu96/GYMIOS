@@ -23,8 +23,11 @@ jobs:
           npm install
           sudo gem install cocoapods
 
-      - name: Sync iOS
+      - name: Clean and Sync iOS
         run: |
+          cd ios/App
+          rm -rf Pods Podfile.lock
+          cd ../..
           npx cap sync ios
 
       - name: Build Xcode Project
